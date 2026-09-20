@@ -1,39 +1,37 @@
 # Vision Workbench
 
-![Stage](https://img.shields.io/badge/stage-project_blueprint-0ea5e9?style=flat-square) ![Focus](https://img.shields.io/badge/focus-computer_vision-8b5cf6?style=flat-square)
+> 本地图片边缘与区域分析工具
 
-**From pixels to inspectable results.**
+![Stage](https://img.shields.io/badge/stage-runnable_demo-10b981?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-0ea5e9?style=flat-square)
 
-面向视频检测、目标追踪与模型部署的视觉实验工作台设计。当前仓库包含项目蓝图，尚未实现可运行程序。
+![Annotated demo](examples/output/annotated.png)
 
-## Planned workflow
+## What runs today
 
-```mermaid
-flowchart LR
- A[Image / Video] --> B[Detection]
- B --> C[Tracking]
- C --> D[Statistics]
- D --> E[Annotated output]
+OpenCV Canny、轮廓提取、区域框选；导出输入、边缘图、标注图及 JSON。默认生成三个几何形状作为可复现样例。不是 YOLO 语义检测器，尚无追踪与 ONNX 功能。
+
+## Quick start
+
+```bash
+git clone https://github.com/foxviot/vision-workbench.git
+cd vision-workbench
+python -m pip install -r requirements.txt
+python analyze.py
 ```
 
-## Design scope
+## Custom input
 
-| Module | Planned deliverable |
-|---|---|
-| Inference | Image and video detection with annotated output |
-| Tracking | Object IDs, trajectories and region counts |
-| Evaluation | Dataset-specific accuracy and latency report |
-| Deployment | ONNX export and runtime comparison |
+```text
+python analyze.py --input your-image.jpg --output output
+```
 
-## Technology references
+## Results and limits
 
-[OpenCV](https://github.com/opencv/opencv) · [Ultralytics](https://github.com/ultralytics/ultralytics) · [Supervision](https://github.com/roboflow/supervision)
+样例输出来自实际运行。速度随硬件与依赖版本变化；示例结果不代表生产环境性能。默认运行不需要 API Key、GPU 或云服务。
 
-## Milestones
+## Attribution
 
-- [ ] Video inference demo
-- [ ] Named dataset and evaluation command
-- [ ] ONNX export example
-- [ ] Measured FPS, latency and hardware details
+[OpenCV Canny tutorial](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html)；复用 opencv-python 的算法实现，应用编排代码为本仓库新增。OpenCV 4.5+ 使用 Apache-2.0；NumPy 使用 BSD-3-Clause。
 
-No benchmark results or trained weights are published yet. Upstream code, datasets and model weights retain their respective licenses.
+本仓库新增代码采用 [MIT](LICENSE)，依赖库和数据保持各自许可证。本项目不代表上游官方项目。

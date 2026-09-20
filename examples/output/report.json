@@ -1,0 +1,29 @@
+{
+  "method": "Canny + external contours; not semantic object detection",
+  "width": 720,
+  "height": 480,
+  "regions": [
+    {
+      "x": 59,
+      "y": 79,
+      "width": 182,
+      "height": 192,
+      "area": 34560.0
+    },
+    {
+      "x": 330,
+      "y": 120,
+      "width": 181,
+      "height": 181,
+      "area": 25500.0
+    },
+    {
+      "x": 509,
+      "y": 339,
+      "width": 142,
+      "height": 82,
+      "area": 11410.0
+    }
+  ],
+  "processing_ms": 53.076
+}

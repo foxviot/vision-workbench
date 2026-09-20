@@ -20,6 +20,7 @@ def analyze(source, output):
         cv2.rectangle(frame, (510, 340), (650, 420), (70, 180, 120), -1)
     started = time.perf_counter()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    histogram = cv2.calcHist([gray], [0], None, [256], [0, 256]).ravel()
     edges = cv2.Canny(cv2.GaussianBlur(gray, (5, 5), 0), 50, 150)
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     boxes = []
@@ -33,12 +34,24 @@ def analyze(source, output):
         cv2.putText(annotated, str(len(boxes)), (x, max(20, y-8)), cv2.FONT_HERSHEY_SIMPLEX, .7, (10, 100, 30), 2)
     report = dict(method='Canny + external contours; not semantic object detection',
                   width=frame.shape[1], height=frame.shape[0], regions=boxes,
+                  mean_bgr=[round(float(v), 2) for v in frame.mean(axis=(0, 1))],
+                  brightness_mean=round(float(gray.mean()), 2),
                   processing_ms=round((time.perf_counter()-started)*1000, 3))
     for name, image in [('input', frame), ('edges', edges), ('annotated', annotated)]:
         ok, encoded = cv2.imencode('.png', image)
         if not ok:
             raise RuntimeError('PNG encoding failed')
         encoded.tofile(str(output / (name + '.png')))
+    hist_canvas = np.full((280, 640, 3), 18, np.uint8)
+    normalized = cv2.normalize(histogram, None, 0, 230, cv2.NORM_MINMAX).ravel()
+    for x in range(1, 256):
+        cv2.line(hist_canvas, ((x-1)*2+64, 250-int(normalized[x-1])),
+                 (x*2+64, 250-int(normalized[x])), (56, 189, 248), 2)
+    cv2.putText(hist_canvas, 'Grayscale histogram', (24, 32), cv2.FONT_HERSHEY_SIMPLEX,
+                .8, (230, 238, 248), 2)
+    cv2.imencode('.png', hist_canvas)[1].tofile(str(output / 'histogram.png'))
+    montage = np.hstack([cv2.resize(frame, (360, 240)), cv2.resize(annotated, (360, 240))])
+    cv2.imencode('.png', montage)[1].tofile(str(output / 'comparison.png'))
     (output / 'report.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
     print(json.dumps(report, indent=2))
     return report

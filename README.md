@@ -7,9 +7,13 @@
 
 ![Annotated demo](examples/output/annotated.png)
 
+![Before and after](examples/output/comparison.png)
+
+![Histogram](examples/output/histogram.png)
+
 ## What runs today
 
-OpenCV Canny、轮廓提取、区域框选；导出输入、边缘图、标注图及 JSON。默认生成三个几何形状作为可复现样例。不是 YOLO 语义检测器，尚无追踪与 ONNX 功能。
+OpenCV Canny、轮廓提取、区域框选、亮度统计和灰度直方图；导出输入、边缘图、标注图、对照图及 JSON。默认生成三个几何形状作为可复现样例。不是 YOLO 语义检测器，尚无追踪与 ONNX 功能。
 
 ## Quick start
 
@@ -32,6 +36,6 @@ python analyze.py --input your-image.jpg --output output
 
 ## Attribution
 
-[OpenCV Canny tutorial](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html)；复用 opencv-python 的算法实现，应用编排代码为本仓库新增。OpenCV 4.5+ 使用 Apache-2.0；NumPy 使用 BSD-3-Clause。
+详见 [ATTRIBUTION.md](ATTRIBUTION.md)。复用 OpenCV/NumPy 的公开 API，应用编排代码为本仓库新增。
 
 本仓库新增代码采用 [MIT](LICENSE)，依赖库和数据保持各自许可证。本项目不代表上游官方项目。

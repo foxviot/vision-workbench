@@ -25,5 +25,11 @@
       "area": 11410.0
     }
   ],
-  "processing_ms": 53.076
+  "mean_bgr": [
+    219.66,
+    220.14,
+    224.75
+  ],
+  "brightness_mean": 221.52,
+  "processing_ms": 128.52
 }
